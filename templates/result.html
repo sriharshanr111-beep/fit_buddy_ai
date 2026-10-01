@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Your FitBuddy Plan{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Your <span>Workout</span> Plan {% if is_updated %}<span class="badge">UPDATED</span>{% endif %}</h1>
+
+  {% if message %}<div class="alert success">{{ message }}</div>{% endif %}
+
+  <h2>User <span>Information</span></h2>
+  <div class="info-grid">
+    <div><small>Name</small>{{ username }}</div>
+    <div><small>User ID</small>{{ user_id }}</div>
+    <div><small>Age</small>{{ age }}</div>
+    <div><small>Weight</small>{{ weight }} kg</div>
+    <div><small>Goal</small>{{ goal|title }}</div>
+    <div><small>Intensity</small>{{ intensity|title }}</div>
+  </div>
+
+  <h2>7-Day <span>Workout Plan</span></h2>
+  <pre>{{ workout_plan }}</pre>
+
+  {% if is_updated %}
+  <details>
+    <summary>Show original plan</summary>
+    <pre>{{ original_plan }}</pre>
+  </details>
+  {% if last_feedback %}<p><strong>Your last feedback:</strong> {{ last_feedback }}</p>{% endif %}
+  {% endif %}
+
+  <h2>Nutrition / <span>Recovery Tip</span></h2>
+  <div class="tip">{{ nutrition_tip }}</div>
+
+  <h2>Give <span>Feedback</span></h2>
+  <form class="ai-form" action="/submit-feedback" method="post">
+    <label for="user_id">User ID</label>
+    <input id="user_id" name="user_id" type="text" required value="{{ user_id }}">
+    <label for="feedback">What should change?</label>
+    <textarea id="feedback" name="feedback" rows="3" minlength="3" maxlength="1000" required
+              placeholder="e.g. More focus on cardio, include more rest days, add yoga"></textarea>
+    <button type="submit">Update My Plan</button>
+    <a class="btn secondary" href="/">New Plan</a>
+  </form>
+  <p class="disclaimer">AI-generated plans are general guidance, not medical advice. Consult a doctor before starting a new exercise program.</p>
+</div>
+{% endblock %}

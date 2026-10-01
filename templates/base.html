@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FitBuddy - AI Workout Generator{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; font-family: 'Roboto', Arial, sans-serif; color: #f1f1f1;
+      /* Optional: drop a photo at static/images/gym.jpg to use it as background */
+      background: linear-gradient(rgba(10,10,15,.82), rgba(10,10,15,.88)), url('/static/images/gym.jpg') center/cover fixed,
+                  linear-gradient(135deg, #141e30, #243b55);
+      display: flex; flex-direction: column;
+    }
+    nav { display: flex; gap: 22px; align-items: center; padding: 16px 32px; background: rgba(0,0,0,.45); flex-wrap: wrap; }
+    nav .brand { font-weight: 900; font-size: 1.4rem; color: #ff5a1f; text-decoration: none; letter-spacing: 1px; margin-right: auto; }
+    nav a { color: #ddd; text-decoration: none; font-weight: 500; }
+    nav a:hover { color: #ff5a1f; }
+    main { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 32px 16px; }
+    .card { width: 100%; max-width: 760px; background: rgba(20,20,28,.88); border-radius: 16px; padding: 30px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.55); }
+    .card.wide { max-width: 1150px; }
+    h1 { margin-top: 0; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+    h1 span, h2 span { color: #ff5a1f; }
+    h2 { margin-top: 28px; }
+    label { display: block; margin: 14px 0 6px; font-weight: 500; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid #444; background: #1b1b25;
+      color: #fff; font-size: 1rem; font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid #ff5a1f; border-color: transparent; }
+    .row { display: flex; gap: 14px; }
+    .row > div { flex: 1; }
+    button, .btn {
+      display: inline-block; margin-top: 22px; padding: 13px 26px; border: 0; border-radius: 8px; cursor: pointer;
+      background: #ff5a1f; color: #fff; font-weight: 700; font-size: 1rem; text-decoration: none; transition: .2s;
+    }
+    button:hover, .btn:hover { background: #ff7b4a; transform: translateY(-1px); }
+    button:disabled { background: #777; cursor: wait; transform: none; }
+    .btn.secondary { background: #3a3f55; } .btn.secondary:hover { background: #4d5473; }
+    .btn.danger { background: #c0392b; margin: 0; padding: 8px 14px; font-size: .85rem; }
+    .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; }
+    .alert.error { background: rgba(231,76,60,.2); border: 1px solid #e74c3c; }
+    .alert.success { background: rgba(46,204,113,.18); border: 1px solid #2ecc71; }
+    pre {
+      background: #12121a; padding: 18px; border-radius: 10px; border: 1px solid #333; overflow-x: auto;
+      white-space: pre-wrap; word-wrap: break-word; line-height: 1.55; font-family: 'Roboto', Arial, sans-serif;
+    }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .info-grid div { background: #1b1b25; padding: 12px 14px; border-radius: 8px; }
+    .info-grid small { display: block; color: #999; text-transform: uppercase; font-size: .7rem; letter-spacing: 1px; }
+    .tip { background: rgba(255,90,31,.12); border-left: 4px solid #ff5a1f; padding: 14px 18px; border-radius: 8px; }
+    .badge { background: #ff5a1f; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+    .disclaimer { font-size: .8rem; color: #999; margin-top: 24px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px; border-bottom: 1px solid #333; text-align: left; vertical-align: top; }
+    th { color: #ff5a1f; text-transform: uppercase; font-size: .8rem; letter-spacing: 1px; }
+    details summary { cursor: pointer; color: #ff8a5c; font-weight: 500; }
+    details pre { max-width: 420px; max-height: 320px; overflow: auto; font-size: .85rem; }
+    .table-wrap { overflow-x: auto; }
+    footer { text-align: center; padding: 14px; color: #777; font-size: .8rem; }
+    @media (max-width: 640px) { .row { flex-direction: column; gap: 0; } nav { padding: 12px 16px; } .card { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/">FIT<span style="color:#fff">BUDDY</span></a>
+    <a href="/">Home</a>
+    <a href="/feedback">Feedback</a>
+    <a href="/view-all-users">All Users</a>
+    <a href="/docs" target="_blank">API Docs</a>
+  </nav>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>FitBuddy &copy; AI Fitness Plan Generator &middot; Powered by Google Gemini</footer>
+  <script>
+    // Show a "working" state on forms that call the AI (responses take a few seconds)
+    document.querySelectorAll('form.ai-form').forEach(function (form) {
+      form.addEventListener('submit', function () {
+        var btn = form.querySelector('button[type=submit]');
+        if (btn) { btn.disabled = true; btn.textContent = 'Working with AI... please wait'; }
+      });
+    });
+  </script>
+</body>
+</html>

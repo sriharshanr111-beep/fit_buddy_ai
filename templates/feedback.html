@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy - Feedback{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Plan <span>Feedback</span></h1>
+  <p>Enter your User ID and tell us what you'd like to change. The AI will update your plan.</p>
+
+  {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+
+  <form class="ai-form" action="/submit-feedback" method="post">
+    <label for="user_id">User ID</label>
+    <input id="user_id" name="user_id" type="text" required placeholder="e.g. thara01" value="{{ user_id or '' }}">
+    <label for="feedback">Your feedback</label>
+    <textarea id="feedback" name="feedback" rows="4" minlength="3" maxlength="1000" required
+              placeholder="e.g. Too hard on legs, add more cardio and one more rest day">{{ feedback or '' }}</textarea>
+    <button type="submit">Update My Plan</button>
+  </form>
+</div>
+{% endblock %}

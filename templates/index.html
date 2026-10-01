@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy - AI Workout Generator{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Fit<span>Buddy</span> &ndash; AI Workout Generator</h1>
+  <p>Tell us about yourself and get a personalized 7-day workout plan plus a nutrition tip.</p>
+
+  {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+
+  <form class="ai-form" action="/generate-workout" method="post">
+    <div class="row">
+      <div>
+        <label for="username">Name</label>
+        <input id="username" name="username" type="text" maxlength="60" required placeholder="e.g. Thara" value="{{ form.get('username', '') }}">
+      </div>
+      <div>
+        <label for="user_id">User ID</label>
+        <input id="user_id" name="user_id" type="text" maxlength="40" required placeholder="e.g. thara01" value="{{ form.get('user_id', '') }}">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="age">Age</label>
+        <input id="age" name="age" type="number" min="10" max="100" required placeholder="25" value="{{ form.get('age', '') }}">
+      </div>
+      <div>
+        <label for="weight">Weight (kg)</label>
+        <input id="weight" name="weight" type="number" step="0.1" min="20" max="300" required placeholder="65" value="{{ form.get('weight', '') }}">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="goal">Fitness Goal</label>
+        <select id="goal" name="goal" required>
+          {% for g in goals %}
+          <option value="{{ g }}" {% if form.get('goal') == g %}selected{% endif %}>{{ g|title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="intensity">Workout Intensity</label>
+        <select id="intensity" name="intensity" required>
+          {% for i in intensities %}
+          <option value="{{ i }}" {% if form.get('intensity', 'medium') == i %}selected{% endif %}>{{ i|title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <button type="submit">Generate Plan</button>
+  </form>
+  <p class="disclaimer">AI-generated plans are general guidance, not medical advice. Consult a doctor before starting a new exercise program.</p>
+</div>
+{% endblock %}

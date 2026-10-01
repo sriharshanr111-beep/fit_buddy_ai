@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy - All Users{% endblock %}
+{% block content %}
+<div class="card wide">
+  <h1>Admin <span>Dashboard</span> &ndash; All Users</h1>
+  <p>Total users: <strong>{{ users|length }}</strong></p>
+
+  {% if users %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User ID</th><th>Name</th><th>Age</th><th>Weight</th><th>Goal</th><th>Intensity</th>
+          <th>Original Plan</th><th>Updated Plan</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.user_id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.weight }} kg</td>
+          <td>{{ user.goal|title }}</td>
+          <td>{{ user.intensity|title }}</td>
+          <td>
+            {% if user.plan %}
+            <details><summary>View</summary><pre>{{ user.plan.original_plan }}</pre></details>
+            {% else %}&mdash;{% endif %}
+          </td>
+          <td>
+            {% if user.plan and user.plan.updated_plan %}
+            <details><summary>View</summary><pre>{{ user.plan.updated_plan }}</pre></details>
+            {% else %}<em>No updates</em>{% endif %}
+          </td>
+          <td>
+            <form action="/delete-user/{{ user.user_id }}" method="post"
+                  onsubmit="return confirm('Delete this user and their plans?');">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p>No users yet. <a href="/" style="color:#ff5a1f">Create the first plan</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}
